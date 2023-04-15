@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { map, catchError, of, finalize } from 'rxjs';
 import { TaskHttpService } from 'src/app/http/task.http.service';
-import { SpinnerService } from 'src/app/services/spinner.service';
 import { TaskService } from 'src/app/services/task.service';
 
 @Component({
@@ -11,8 +10,7 @@ import { TaskService } from 'src/app/services/task.service';
 export class TaskListComponent implements OnInit {
   constructor(
     private taskService: TaskService,
-    private taskHttpService: TaskHttpService,
-    private spinnerService: SpinnerService
+    private taskHttpService: TaskHttpService
   ) {}
 
   get tasks() {
@@ -20,13 +18,13 @@ export class TaskListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.spinnerService.setLoading(true);
+    this.taskService.setLoading(true);
     this.taskHttpService
       .getAll()
       .pipe(
         map(res => (this.taskService.tasks = res)),
-        catchError(err => of(alert(err.message))),
-        finalize(() => this.spinnerService.setLoading(false))
+        catchError(error => of(this.taskService.setError(error.message))),
+        finalize(() => this.taskService.setLoading(false))
       )
       .subscribe();
   }

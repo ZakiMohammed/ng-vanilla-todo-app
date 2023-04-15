@@ -3,5 +3,5 @@
   "routes": "server/routes.json",
   "watch": true,
   "id": "_id",
-  "delay": 500
+  "delay": 100
 }

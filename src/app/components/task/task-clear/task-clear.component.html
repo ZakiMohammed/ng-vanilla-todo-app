@@ -1,3 +1,8 @@
-<button type="button" class="btn-clear" (click)="handleRemoveTask()" *ngIf="tasks.length">
-  <fa-icon icon="trash-alt"></fa-icon> Clear All
-</button>
+<div class="form-sub">
+  <div class="error">
+    {{ error }}
+  </div>
+  <button type="button" class="btn-clear" (click)="handleRemoveTask()" *ngIf="tasks.length">
+    <fa-icon icon="trash-alt"></fa-icon> Clear All
+  </button>
+</div>

@@ -9,6 +9,7 @@
     - CARD
     - EMPTY
     - CLEAR
+    - ERROR
     - LOADER
 */
 
@@ -146,10 +147,18 @@ body {
   border-radius: 10px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+
+  &.edit {
+    background-color: #fdcb6e;
+  }
 }
 
 .form button:hover {
   background-color: #fd79a8;
+
+  &.edit {
+    background-color: #ffeaa7;
+  }
 }
 
 .form button svg {
@@ -159,6 +168,12 @@ body {
   path {
     fill: #fff;
   }
+}
+
+.form-sub {
+  display: flex;
+  justify-content: space-between;
+  align-content: flex-start;
 }
 
 /* CARD
@@ -252,13 +267,20 @@ body {
   font-size: 12px;
   padding: 0;
   color: #777;
-  text-align: right;
-  width: 100%;
   cursor: pointer;
+  height: fit-content;
 }
 
 .btn-clear svg path {
   fill: #777;
+}
+
+/* ERROR
+---------------------------------------------------------------------- */
+.error {
+  color: #ff7675;
+  font-size: 12px;
+  width: 80%;
 }
 
 /* LOADER

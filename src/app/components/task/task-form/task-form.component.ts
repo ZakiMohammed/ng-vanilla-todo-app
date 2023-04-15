@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+
 import { map, catchError, of, finalize } from 'rxjs';
 import { TaskHttpService } from 'src/app/http/task.http.service';
 import { Task } from 'src/app/models/task';
-import { SpinnerService } from 'src/app/services/spinner.service';
 import { TaskService } from 'src/app/services/task.service';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'app-task-form',
@@ -15,8 +16,7 @@ export class TaskFormComponent {
 
   constructor(
     private taskService: TaskService,
-    private taskHttpService: TaskHttpService,
-    private spinnerService: SpinnerService
+    private taskHttpService: TaskHttpService
   ) {
     this.taskService.task.subscribe(task => {
       this.task = task;
@@ -30,11 +30,11 @@ export class TaskFormComponent {
       return;
     }
 
-    this.spinnerService.setLoading(true);
+    this.taskService.setLoading(true);
 
     if (!this.task) {
       const newTask: Task = {
-        _id: '',
+        _id: uuid(),
         title: this.title,
       };
 
@@ -45,8 +45,8 @@ export class TaskFormComponent {
             this.taskService.tasks.push(task);
             this.title = '';
           }),
-          catchError(err => of(alert(err.message))),
-          finalize(() => this.spinnerService.setLoading(false))
+          catchError(error => of(this.taskService.setError(error.message))),
+          finalize(() => this.taskService.setLoading(false))
         )
         .subscribe();
     } else {
@@ -62,8 +62,8 @@ export class TaskFormComponent {
             this.taskService.task.next(null);
             this.title = '';
           }),
-          catchError(err => of(alert(err.message))),
-          finalize(() => this.spinnerService.setLoading(false))
+          catchError(error => of(this.taskService.setError(error.message))),
+          finalize(() => this.taskService.setLoading(false))
         )
         .subscribe();
     }
